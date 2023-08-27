@@ -13,13 +13,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {VoxImaplant} from 'react-native-voximplant';
 
+// Login Screen
 const LogInScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const navigation = useNavigation();
 
-  
   // useEffect(() => {
   //   const checkLogInStatus = async () => {
   //     try {
