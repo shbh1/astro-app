@@ -7,8 +7,9 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 const CallingScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-
   const user = route?.params?.user;
+
+  
   const goBack = () => {
     navigation.pop();
   };
@@ -19,6 +20,7 @@ const CallingScreen = () => {
       </Pressable>
       <View style={styles.cameraPreview}>
         <Text style={styles.name}>{user?.name}</Text>
+        <Text style={styles.name}>{user?._id}</Text>
       </View>
       <CallAction />
     </View>

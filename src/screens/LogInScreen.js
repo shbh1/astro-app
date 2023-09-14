@@ -7,52 +7,66 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {VoxImaplant} from 'react-native-voximplant';
+import {UserType} from '../UserContext';
 
-// Login Screen
 const LogInScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const navigation = useNavigation();
+  const {userId, setUserId} = useContext(UserType);
+
+  console.log('1.', userId);
 
   // useEffect(() => {
   //   const checkLogInStatus = async () => {
   //     try {
   //       const token = await AsyncStorage.getItem('authToken');
   //       if (token) {
-  //         navigation.navigate('Astrologers');
+  //         const storedUserId = await AsyncStorage.getItem('userId');
+  //         console.log(userId);
+  //         if (storedUserId) {
+  //           // Set the userId from AsyncStorage
+  //           setUserId(storedUserId);
+
+  //           navigation.navigate('Astrologers');
+  //         }
   //       } else {
-  //         // token not found, show the login screen
+  //         // Token not found, show the login screen
   //       }
   //     } catch (error) {
   //       console.log('Error', error);
   //     }
   //   };
   //   checkLogInStatus();
-  // });
+  // }, []); // Pass an empty dependency array to run this effect only once
 
   const handleLogin = () => {
     const user = {
       email: email,
       password: password,
     };
+
     console.log(user);
+
     axios
       .post('http://10.0.2.2:2020/login', user)
       .then(res => {
         const token = res.data.token;
-        const role = res.data.role; // Access the role directly from the response
-        console.log(role);
+        const role = res.data.role;
+        const userId = res.data.userId;
+
         AsyncStorage.setItem('authToken', token);
+        AsyncStorage.setItem('userId', userId);
+        setUserId(userId); // Set the userId in your context
+
         if (role === 'client') {
-          navigation.navigate('Astrologers');
+          navigation.navigate('Main');
         } else if (role === 'astrologer') {
-          navigation.navigate('Client');
+          navigation.navigate('AstroHome');
         } else {
           // Handle other roles if needed
         }

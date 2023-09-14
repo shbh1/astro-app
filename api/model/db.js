@@ -7,9 +7,28 @@ const userSchema = new mongoose.Schema({
   phoneNumber: {type: String, required: true},
   dateOfBirth: {type: Date, required: true}, // New field for date of birth
   role: {type: String, enum: ['client', 'astrologer'], required: true},
+  sentRequest: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
+  recievedRequest: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
+  friends: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
   skills: [{type: String}], // Astrologer-specific attribute
   languages: [{type: String}], // Astrologer-specific attribute
   yearsOfExperience: {type: Number}, // Astrologer-specific attribute
+
   verificationToken: String,
   createdAt: {
     type: Date,
